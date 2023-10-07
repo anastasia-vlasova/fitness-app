@@ -16,7 +16,7 @@ The mentioned example has some missing features I'd like to have and I've implem
   * The activity type icon in the navigation panel shows the selected sport
   * Training sessions can be deleted and opened from this list
   * Columns change depending on which activity is selected
-* Openning the training session results in the visualization of its data
+* Opening the training session results in the visualization of its data
     * Statistics
     * Plots
       * The outliers can be removed (one can toggle between the view with or without outliers)
@@ -36,6 +36,7 @@ The main functionality of this app is **data visualization** which was not the c
 * Working with larger chunks of data (training sessions)
   * Transporting it, storing it, processing it
 * Dynamic plotting and performance
+* Back-end is not just moving the data around, but also processes it 
 ## Files
 * Front-end `./frontend/` created with `npx create-react-app frontend`. In `/src`:
   * `App.js` assembles all the components of the one-page app and manages when they are present
@@ -49,13 +50,21 @@ The main functionality of this app is **data visualization** which was not the c
 
 * `./in` sample files with training data to import
 ## How to run
-Install dependencies
+### Install dependencies
+Tested with Python 3.8.6
+
+Optionally using venv
+```
+python -m venv .venv
+.venv\Scripts\activate
+```
+Install
 ```
 pip install -r requirements.txt
 cd frontend
 npm install
 ```
-Run
+### Run
 
 Build React application and run Django server
 ```
