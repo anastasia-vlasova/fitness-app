@@ -1,21 +1,19 @@
 # FitnessApp
 ## Overview
-The app is a sport activity analyzer like the ones normally offered by the fitness trackers/ fitness watches manufacturers e.g. https://flow.polar.com.
+The app is a sport activity analyser. It allows to store, visualize and analyse the training data recorded by the fitness watch.
 
-The mentioned example has some missing features I'd like to have and I've implemented them in this app
-* **Outlier removal** The data from the watch might have wrong readings, they increase unnecessary the y-range of the plot
-* **Compare sessions** Plotting two sessions together allows to have detailed comparison  
+The technologies used are Django for the back-end and React for the front-end.
 ## Features
-* Standard user registration and login/logout
-* Import and store training session data
-  * Training data has to be in the format like the samples in ./in folder - this is the format the data can be exported from the actual fitness watch I have
-  * Additionally to the data in **csv** format the **track id** can be optionally specified
+* Import and store training session data  in **csv** format.
+  * Training data has to be in the format like the samples in the **./in** folder.
+  * Additionally to the data  the **track id** can be optionally specified. **Track id** allows to identify the training sessions on the same track for their further comparison.
 * View the list of the logged in user training sessions statistics
   * Sorted by the date of activity in descending order
   * The type of activity (sport) can be selected
   * The activity type icon in the navigation panel shows the selected sport
   * Training sessions can be deleted and opened from this list
   * Columns change depending on which activity is selected
+  * Standard user registration and login/logout
 * Opening the training session results in the visualization of its data
     * Statistics
     * Plots
@@ -25,30 +23,93 @@ The mentioned example has some missing features I'd like to have and I've implem
       * One training session can be selected from the list for comparison (and deselected)
     * List of the training sessions with the same track id and the same sport
    
-## Distinctiveness
-The main functionality of this app is **data visualization** which was not the case for any other project.
+## Distinctiveness and Complexity
+### Data visualisation
+ The main functionality of this app is data visualization which was not the case for any other project. **chart.js** library was used for dynamic plotting on the front-end. Plotting of the data as is caused performance issues which have been addressed by decreasing the amount of plotted fulcrums.
 
-## Complexity
-*... also contains some distinctiveness*
-* Architecture - clean cut between back-end and front-end
-  * Front-end is in React only - this demanded own implementation of logging and registration
-  * Back-end - api in Django
-* Working with larger chunks of data (training sessions)
-  * Transporting it, storing it, processing it
-* Dynamic plotting and performance
-* Back-end is not just moving the data around, but also processes it 
-## Files
-* Front-end `./frontend/` created with `npx create-react-app frontend`. In `/src`:
-  * `App.js` assembles all the components of the one-page app and manages when they are present
-  * `Client.js` contains all methods to communicate with API
-  * `Home.js` Major component for the "Home view", default view for the logged in user
-  * `Nav.js` Navigation panel component
-  * `TrainingData.js` Major component for a single training session view
-  * `TrainingMetaDataList.js` Component used through the app to show training sessions statistics list
-  * `style.css` - custom style for the chart container
-* Back-end `.` excluding `frontend` - no additional files
+### Material UI
+Exploring component libraries other than Bootstrap. Bootstrap is also used and though I realize that for the real project it's better to stick to one library, I believe that for the study project it's fine.
 
-* `./in` sample files with training data to import
+### Larger amounts of data
+Training session data is a relatively large amount of table data which has to be:
+* imported in the form as a csv file
+* sent in the request to the backend API
+* parsed on the back-end to obtain training metadata and a table with training data itself
+* stored in the DB using **django-picklefield**
+
+Other projects were dealing with smaller and simpler data.
+
+### Data processing on the back-end
+Compared to previous projects the back-end is not only moving the data around, but also processes it. **pandas**, **numpy**, **scipy** libraries are used for processing table numeric data.
+
+### Architecture
+Clean cut between back-end and front-end was made. In my previous projects I relied on predefined Django templates for login and registration. In this project:
+  * Front-end - React only
+  * Back-end - API in Django
+  
+which is a better structure.
+
+## Responsiveness
+The app is responsive as demonstrated in the demo video. Wide tables containing a lot of columns couldn't be made responsive by rearranging UI components vertically, so less important table columns disappear when the screen size gets smaller.
+
+## Models
+Two Django models are used:
+* **User** - simple user for creating an account and logging in/ out
+* **TrainingData** - training session data and metadata stored in one model. Each metadata in its own field. And the complete table with data in one field.
+
+
+ 
+## Files and Folders
+Files in **bold** are custom files or auto-generated files which were considerably modified.
+Files in *italic* were auto-generated during either React app creation or Django project/app creation and were not or were only slightly modified.
+### Back-end
+* `./api/` - back-end app
+  * *`migrations/` - generated by Django when running manage.py makemigrations*
+  * *`__init__ .py` - generated, shows that the folder is python package*
+  * **`admin.py`** - added custom admin site DB representation
+  * *`apps.py` - auto-generated*
+  * **`models.py`** - DB models, added two models mentioned above
+  * **`urls.py`** - added paths to the API endpoints
+  * **`views.py`** - all the back-end logic
+ 
+* `./project5/` back-end project
+  * *`__init__.py`* - generated, shows that the folder is python package*
+  * *` asgi.py` - auto-generated*
+  * ***`settings.py`** - autogenerated, minor changes were made to enable cors headers, csrf, pointing at built react application, authorized user model*
+  * ***`urls.py`**- auto-generated, added app url*
+  * *`wsgi.py` - auto-generated*
+
+### Front-end
+* `./frontend/` front-end initially created with `npx create-react-app frontend`.
+ 
+  * `public/`
+    * *`index.html` - front page of the react app - created by create-react-app*
+ 
+  * `src/`:
+    * **`App.js`** - assembles all the components of the one-page app and manages when they are present
+    * **`Client.js`** - contains all methods to communicate with Django API
+    * **`Home.js`** - major component for the "Home view", default view for the logged in user, including training data list , training data upload form and to switch between training activities
+    * **`Nav.js`** - navigation panel component
+    * **`TrainingData.js`** major component for a single training session view
+    * **`TrainingMetaDataList.js`** - component used through the app to show training sessions statistics list
+    * **`style.css`** - custom style for the chart container
+    * *`index.js` - created by create-react-app*
+ 
+  * *`.gitignore` - files which should not end up in git*
+  * *`package-lock.json`- npm dependencies, created by npm install*
+  * *`package.json`- npm dependencies, created by npm install*
+  * *`README.md` - readme from create-react-app*
+ 
+* *`.gitignore`- files which should not end up in git*
+* **`db.sqlite3`** - database used in the project - created by Django migrations
+* *`manage.py` - management of the server - created by Django*
+* **`README.md`** - this readme
+* **`requirements.txt`** - python dependencies
+
+* **`./in/`** sample .csv files with training data to import into the app
+  * **`cycle_*.csv`** - training data for cycling activity
+  * **`run_*.csv`** - training data for running activity
+ 
 ## How to run
 ### Install dependencies
 Tested with Python 3.8.6
