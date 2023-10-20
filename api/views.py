@@ -18,14 +18,6 @@ import numpy as np
 def front(request: WSGIRequest):
     context = { }
     return render(request, 'index.html', context)
-
-@ensure_csrf_cookie
-def token(request: WSGIRequest):
-    if not request.session.exists(request.session.session_key):
-        request.session.create()
-    response = JsonResponse({'token': get_token(request)}, status=200)
-    response.set_cookie('blah', domain='http://127.0.0.1:3000', samesite=None)
-    return response
     
 @csrf_exempt
 def register(request: WSGIRequest):
@@ -81,10 +73,6 @@ def current_user(request: WSGIRequest):
          'user_id': request.user.id,
          'is_authenticated': request.user.is_authenticated}
     )
-
-@login_required
-def get_users(request: WSGIRequest):
-    return JsonResponse([user.serialize() for user in User.objects.all()], safe=False)
 
 @login_required
 def add_training_data(request: WSGIRequest):

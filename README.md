@@ -57,7 +57,17 @@ Two Django models are used:
 * **User** - simple user for creating an account and logging in/ out
 * **TrainingData** - training session data and metadata stored in one model. Each metadata in its own field. And the complete table with data in one field.
 
-
+## API
+`api/logout` - logout authenticated user
+`api/login` - login existing user
+`api/register` - register new user
+`api/current_user` - get authenticated user info
+`api/add_training_data` - add training session to the DB
+`api/delete_training_data` - delete training session from the DB
+`api/get_training_metadata` - get training sessions metadata for the authenticated user, filtered by sport, track id or training id
+`api/get_training_metadatum` - get single training session metadata for the authenticated user
+`api/get_training_datum` - get data for a single training session
+`api/remove_outliers` - get data with outliers removed for a single training session
  
 ## Files and Folders
 Files in **bold** are custom files or auto-generated files which were considerably modified.
