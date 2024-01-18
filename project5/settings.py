@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ra4rli35%-fpnojcvehrs*@&#kql)_z2%eil04$c8_zi@*3vde
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['fitness-app-production.up.railway.app']
 
 
 # Application definition
@@ -124,17 +124,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-#STATIC_ROOT = [os.path.join(BASE_DIR, 'frontend', 'build', 'static')]
+STATIC_ROOT = [os.path.join(BASE_DIR, 'frontend', 'build', 'static')]
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend', 'build', 'static')]
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:3000', 'http://localhost:3000']
+CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:3000', 'http://localhost:3000', 'https://fitness-app-production.up.railway.app']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000', 'http://localhost:3000']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000', 'http://localhost:3000', 'https://fitness-app-production.up.railway.app']
 
 
 
