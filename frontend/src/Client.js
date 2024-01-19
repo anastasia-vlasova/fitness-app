@@ -1,4 +1,4 @@
-export const SERVER = 'http://127.0.0.1:8000/api';
+export const SERVER = 'https://fitness-app-production.up.railway.app/api';
 
 //TODO: Refactor and move all the fetches into here
 //TODO: Refactor remove all the state setting functions from here
