@@ -1,9 +1,19 @@
 # FitnessApp
-## Overview
+The app is the final project of [CS50W](https://cs50.harvard.edu/web/2020) course. The course certificate is [here](https://cs50.harvard.edu/certificates/12708d7b-dde4-40ac-ab22-5e6e4bcd5f0f).
+![app view](screenshot.PNG)
+
+## Contents
+- [Overview](#Overview)
+- [Features](#Features)
+- [API](#API)
+- [How to run](#HowToRun)
+
+## <a id="Overview"></a> Overview
 The app is a sport activity analyser. It allows to store, visualize and analyse the training data recorded by the fitness watch.
+ [Demo video](https://youtu.be/3tud0QvcTZs)
 
 The technologies used are Django for the back-end and React for the front-end.
-## Features
+## <a id="Features"></a>Features
 * Import and store training session data  in **csv** format.
   * Training data has to be in the format like the samples in the **./in** folder.
   * Additionally to the data  the **track id** can be optionally specified. **Track id** allows to identify the training sessions on the same track for their further comparison.
@@ -22,124 +32,51 @@ The technologies used are Django for the back-end and React for the front-end.
       * The x-axis range can be changed
       * One training session can be selected from the list for comparison (and deselected)
     * List of the training sessions with the same track id and the same sport
-   
-## Distinctiveness and Complexity
-### Data visualisation
- The main functionality of this app is data visualization which was not the case for any other project. **chart.js** library was used for dynamic plotting on the front-end. Plotting of the data as is caused performance issues which have been addressed by decreasing the amount of plotted fulcrums.
 
-### Material UI
-Exploring component libraries other than Bootstrap. Bootstrap is also used and though I realize that for the real project it's better to stick to one library, I believe that for the study project it's fine.
+## <a id="API"></a>API
+* `api/logout` - logout authenticated user
+* `api/login` - login existing user
+* `api/register` - register new user
+* `api/current_user` - get authenticated user info
+* `api/add_training_data` - add training session to the DB
+* `api/delete_training_data` - delete training session from the DB
+* `api/get_training_metadata` - get training sessions metadata for the authenticated user, filtered by sport, track id or training id
+* `api/get_training_metadatum` - get single training session metadata for the authenticated user
+* `api/get_training_datum` - get data for a single training session
+* `api/remove_outliers` - get data with outliers removed for a single training session
 
-### Larger amounts of data
-Training session data is a relatively large amount of table data which has to be:
-* imported in the form as a csv file
-* sent in the request to the backend API
-* parsed on the back-end to obtain training metadata and a table with training data itself
-* stored in the DB using **django-picklefield**
-
-Other projects were dealing with smaller and simpler data.
-
-### Data processing on the back-end
-Compared to previous projects the back-end is not only moving the data around, but also processes it. **pandas**, **numpy**, **scipy** libraries are used for processing table numeric data.
-
-### Architecture
-Clean cut between back-end and front-end was made. In my previous projects I relied on predefined Django templates for login and registration. In this project:
-  * Front-end - React only
-  * Back-end - API in Django
-  
-which is a better structure.
-
-## Responsiveness
-The app is responsive as demonstrated in the demo video. Wide tables containing a lot of columns couldn't be made responsive by rearranging UI components vertically, so less important table columns disappear when the screen size gets smaller.
-
-## Models
-Two Django models are used:
-* **User** - simple user for creating an account and logging in/ out
-* **TrainingData** - training session data and metadata stored in one model. Each metadata in its own field. And the complete table with data in one field.
-
-## API
-`api/logout` - logout authenticated user
-`api/login` - login existing user
-`api/register` - register new user
-`api/current_user` - get authenticated user info
-`api/add_training_data` - add training session to the DB
-`api/delete_training_data` - delete training session from the DB
-`api/get_training_metadata` - get training sessions metadata for the authenticated user, filtered by sport, track id or training id
-`api/get_training_metadatum` - get single training session metadata for the authenticated user
-`api/get_training_datum` - get data for a single training session
-`api/remove_outliers` - get data with outliers removed for a single training session
- 
-## Files and Folders
-Files in **bold** are custom files or auto-generated files which were considerably modified.
-Files in *italic* were auto-generated during either React app creation or Django project/app creation and were not or were only slightly modified.
-### Back-end
-* `./api/` - back-end app
-  * *`migrations/` - generated by Django when running manage.py makemigrations*
-  * *`__init__ .py` - generated, shows that the folder is python package*
-  * **`admin.py`** - added custom admin site DB representation
-  * *`apps.py` - auto-generated*
-  * **`models.py`** - DB models, added two models mentioned above
-  * **`urls.py`** - added paths to the API endpoints
-  * **`views.py`** - all the back-end logic
- 
-* `./project5/` back-end project
-  * *`__init__.py`* - generated, shows that the folder is python package*
-  * *` asgi.py` - auto-generated*
-  * ***`settings.py`** - autogenerated, minor changes were made to enable cors headers, csrf, pointing at built react application, authorized user model*
-  * ***`urls.py`**- auto-generated, added app url*
-  * *`wsgi.py` - auto-generated*
-
-### Front-end
-* `./frontend/` front-end initially created with `npx create-react-app frontend`.
- 
-  * `public/`
-    * *`index.html` - front page of the react app - created by create-react-app*
- 
-  * `src/`:
-    * **`App.js`** - assembles all the components of the one-page app and manages when they are present
-    * **`Client.js`** - contains all methods to communicate with Django API
-    * **`Home.js`** - major component for the "Home view", default view for the logged in user, including training data list , training data upload form and to switch between training activities
-    * **`Nav.js`** - navigation panel component
-    * **`TrainingData.js`** major component for a single training session view
-    * **`TrainingMetaDataList.js`** - component used through the app to show training sessions statistics list
-    * **`style.css`** - custom style for the chart container
-    * *`index.js` - created by create-react-app*
- 
-  * *`.gitignore` - files which should not end up in git*
-  * *`package-lock.json`- npm dependencies, created by npm install*
-  * *`package.json`- npm dependencies, created by npm install*
-  * *`README.md` - readme from create-react-app*
- 
-* *`.gitignore`- files which should not end up in git*
-* **`db.sqlite3`** - database used in the project - created by Django migrations
-* *`manage.py` - management of the server - created by Django*
-* **`README.md`** - this readme
-* **`requirements.txt`** - python dependencies
-
-* **`./in/`** sample .csv files with training data to import into the app
-  * **`cycle_*.csv`** - training data for cycling activity
-  * **`run_*.csv`** - training data for running activity
- 
-## How to run
+## <a id="HowToRun"></a>How to run
 ### Install dependencies
-Tested with Python 3.8.6
+#### Backend (python3.8)
 
-Optionally using venv
+Using pip
+
+>pip install -r requirements.txt
+
+...or [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html)
+
+
+>micromamba create -n fitness-app-env -f mamba-env.yml
+
+#### Frontend
 ```
-python -m venv .venv
-.venv\Scripts\activate
-```
-Install
-```
-pip install -r requirements.txt
 cd frontend
 npm install
 ```
-### Run
 
-Build React application and run Django server
+Build React app:
 ```
 npm run build
 cd ..
-python manage.py runserver
 ```
+
+
+### Run
+
+Run Django server:
+
+>python manage.py runserver
+
+or with micromamba without environment activation:
+>micromamba run -n fitness-app python manage.py runserver
+
